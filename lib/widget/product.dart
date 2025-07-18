@@ -13,3 +13,10 @@ class Product {
     required this.productInfo,
   });
 }
+
+Product p1 = Product(
+  productImage: Image.asset('assets/images/크림우동.jpg'),
+  productName: '크림우동sss',
+  productPrice: 2500,
+  productInfo: '군인들의 주식',
+);
