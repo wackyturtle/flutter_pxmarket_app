@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_pxmarket_app/widget/product.dart';
 
 class ProductRegistPage extends StatefulWidget {
   @override
@@ -62,12 +63,15 @@ class _ProductRegistPageState extends State<ProductRegistPage> {
           TextButton(
             onPressed: () {
               Navigator.pop(context); // 팝업 닫기
-              Navigator.pop(context, {
-                'image': _selectedImage,
-                'name': controller_name.text.trim(),
-                'price': controller_price.text.trim(),
-                'info': controller_info.text.trim(),
-              }); // 이전 페이지로 데이터 넘기기
+
+              final product = Product(
+                productImage: _selectedImage!.toString(), // File → Image 변환
+                productName: controller_name.text.trim(),
+                productPrice: int.parse(controller_price.text.trim()),
+                productInfo: controller_info.text.trim(),
+              );
+
+              Navigator.pop(context, product); // 이전 페이지로 Product 객체 전달
             },
             child: Text('확인', style: TextStyle(fontWeight: FontWeight.bold)),
             style: TextButton.styleFrom(
@@ -110,9 +114,10 @@ class _ProductRegistPageState extends State<ProductRegistPage> {
         backgroundColor: Color(0xFF3E5934),
         foregroundColor: Colors.white,
         leading: IconButton(
+          //뒤로가기버튼
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context); // 뒤로 가기
+            Navigator.pop(context); // 뒤로가기
           },
         ),
       ),

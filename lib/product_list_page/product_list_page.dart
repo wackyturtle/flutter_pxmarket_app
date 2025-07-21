@@ -135,7 +135,7 @@ class ProductBox extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(25),
               image: DecorationImage(
-                image: AssetImage(image),
+                image: AssetImage('$image'),
                 fit: BoxFit.cover,
               ),
             ),
