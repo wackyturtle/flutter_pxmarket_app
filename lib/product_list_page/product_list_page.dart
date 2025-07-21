@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_pxmarket_app/product_regist_page/product_regist_page.dart';
 import 'package:flutter_pxmarket_app/widget/product.dart';
@@ -100,6 +102,8 @@ class ProductRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: productList.map((product) {
         return ProductBox(
           name: product.productName,
@@ -114,7 +118,7 @@ class ProductRow extends StatelessWidget {
 class ProductBox extends StatelessWidget {
   final name;
   final price;
-  final image;
+  final File image;
 
   const ProductBox({
     super.key,
@@ -135,7 +139,7 @@ class ProductBox extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(25),
               image: DecorationImage(
-                image: AssetImage('$image'),
+                image: FileImage(image),
                 fit: BoxFit.cover,
               ),
             ),
