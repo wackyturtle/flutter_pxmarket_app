@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pxmarket_app/widget/product.dart';
 import 'package:flutter_pxmarket_app/product_list_page/product_list_page.dart';
+import 'package:flutter_pxmarket_app/widget/method.dart';
 
 class CartItem {
   final Product product;
@@ -53,10 +54,7 @@ class _ProductCartPageState extends State<ProductCartPage> {
             Navigator.of(context).pop();
           },
         ),
-        title: const Text(
-          '장바구니',
-          style: TextStyle(fontSize: 24, color: Color(0xFFF9F9F9)),
-        ),
+        title: titleMethod('장바구니'),
         centerTitle: true,
         backgroundColor: const Color(0xFF3E5630),
         actions: [
@@ -227,7 +225,7 @@ class _ProductCartPageState extends State<ProductCartPage> {
         ),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+        //mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -245,7 +243,8 @@ class _ProductCartPageState extends State<ProductCartPage> {
               ),
             ],
           ),
-          const SizedBox(width: 130),
+          const Spacer(),
+          //const SizedBox(width: 100),
           ElevatedButton(
             onPressed: () {
               showDialog(
@@ -263,12 +262,9 @@ class _ProductCartPageState extends State<ProductCartPage> {
                           // 2. 장바구니 비우기
                           setState(() => CartItem.items.clear());
                           // 3. 메인 화면으로 이동
-                          Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                              builder: (context) => ProductListPage(),
-                            ),
-                            (Route<dynamic> route) => false,
-                          );
+                          Navigator.of(
+                            context,
+                          ).popUntil((route) => route.isFirst);
                         },
                       ),
                     ],

@@ -5,6 +5,8 @@ import 'package:flutter_pxmarket_app/product_detail_page/product_detail_page.dar
 import 'package:flutter_pxmarket_app/product_regist_page/product_regist_page.dart';
 import 'package:flutter_pxmarket_app/widget/product.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter_pxmarket_app/widget/method.dart';
 
 class ProductListPage extends StatefulWidget {
   @override
@@ -13,6 +15,7 @@ class ProductListPage extends StatefulWidget {
 
 class _ProductListPageState extends State<ProductListPage> {
   final List<Product> productList = [];
+
   List<Product?> getFilledList(List<Product> productList) {
     const int itemsPerRow = 3;
     int remainder = productList.length % itemsPerRow;
@@ -39,25 +42,10 @@ class _ProductListPageState extends State<ProductListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'PX마켓',
-          style: TextStyle(fontSize: 32, color: Color(0xFFF9F9F9)),
-        ),
+        title: titleMethod('PX 마켓'),
         centerTitle: true,
         backgroundColor: Color(0xFF3E5630),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.shopping_cart, size: 40, color: Color(0xFFF9F9F9)),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ProductCartPage(),
-                ), // 여기를 ProductCartPage로 변경하기
-              );
-            },
-          ),
-        ],
+        actions: [goToCart(context)],
       ),
       body: productList.isEmpty
           ? Center(child: Text('등록된 상품이 없습니다.'))
@@ -71,11 +59,11 @@ class _ProductListPageState extends State<ProductListPage> {
               }).toList(),
             ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
-      floatingActionButton: PAB(),
+      floatingActionButton: FAB(),
     );
   }
 
-  SizedBox PAB() {
+  SizedBox FAB() {
     return SizedBox(
       height: 80,
       width: 80,
@@ -149,17 +137,13 @@ class ProductBox extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 5),
+                    SizedBox(height: 10),
                     Text(
-                      '냉동',
-                      style: TextStyle(fontSize: 12, color: Color(0xFF3E5630)),
-                    ),
-                    Text(
-                      product.productName ?? '이름 없는 상품',
+                      product.productName,
                       style: TextStyle(fontSize: 15, color: Color(0xFF292929)),
                     ),
                     Text(
-                      product.productPrice.toString(),
+                      '${NumberFormat('#,###').format(product.productPrice)}원',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
