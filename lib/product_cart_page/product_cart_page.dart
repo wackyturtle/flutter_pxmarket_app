@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pxmarket_app/widget/product.dart';
 import 'package:flutter_pxmarket_app/product_list_page/product_list_page.dart';
+import 'package:intl/intl.dart';
 
 class CartItem {
   final Product product;
@@ -111,6 +112,8 @@ class _ProductCartPageState extends State<ProductCartPage> {
               borderRadius: BorderRadius.circular(20),
             ),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
@@ -122,44 +125,31 @@ class _ProductCartPageState extends State<ProductCartPage> {
                 ),
                 const SizedBox(width: 16),
                 Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      top: 0.0,
-                    ), // 상품 정보 텍스트를 아래로 내리기
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // TODO: 상품 데이터에 회사명/카테고리 추가 후 연결 필요
-                        const Text(
-                          '제조사/브랜드',
-                          style: TextStyle(fontSize: 12, color: Colors.grey),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        item.product.productName ?? '이름 없는 상품',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
                         ),
-                        const SizedBox(height: 2),
-                        Text(
-                          item.product.productName ?? '이름 없는 상품',
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          '${item.product.productPrice}원',
-                          style: const TextStyle(fontSize: 14),
-                        ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        '${NumberFormat('#,###').format(item.product.productPrice)}원',
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                    ],
                   ),
                 ),
+
                 Padding(
-                  padding: const EdgeInsets.only(
-                    top: 50.0,
-                  ), // +,- 버튼을 아래로 내리기 위한 여백
+                  padding: const EdgeInsets.only(top: 50),
                   child: Row(
                     children: [
-                      IconButton(
-                        icon: const Icon(Icons.remove_circle_outline),
-                        onPressed: () {
+                      GestureDetector(
+                        onTap: () {
                           setState(() {
                             if (item.quantity > 1) {
                               item.quantity--;
@@ -168,7 +158,23 @@ class _ProductCartPageState extends State<ProductCartPage> {
                             }
                           });
                         },
+                        child: Container(
+                          width: 30,
+                          height: 30,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Color(0xFF3E5630),
+                          ),
+                          child: const Center(
+                            child: Icon(
+                              Icons.remove,
+                              size: 18,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
                       ),
+                      const SizedBox(width: 12),
                       Text(
                         '${item.quantity}',
                         style: const TextStyle(
@@ -176,13 +182,28 @@ class _ProductCartPageState extends State<ProductCartPage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.add_circle_outline),
-                        onPressed: () {
+                      const SizedBox(width: 12),
+                      GestureDetector(
+                        onTap: () {
                           setState(() {
                             item.quantity++;
                           });
                         },
+                        child: Container(
+                          width: 30,
+                          height: 30,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Color(0xFF3E5630),
+                          ),
+                          child: const Center(
+                            child: Icon(
+                              Icons.add,
+                              size: 18,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -227,7 +248,7 @@ class _ProductCartPageState extends State<ProductCartPage> {
         ),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+        // mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -237,7 +258,7 @@ class _ProductCartPageState extends State<ProductCartPage> {
                 style: TextStyle(fontSize: 16, color: Colors.grey),
               ),
               Text(
-                '${_calculateTotalPrice()}원',
+                '${NumberFormat('#,###').format(_calculateTotalPrice())}원',
                 style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -245,7 +266,8 @@ class _ProductCartPageState extends State<ProductCartPage> {
               ),
             ],
           ),
-          const SizedBox(width: 130),
+          // const SizedBox(width: 130),
+          const Spacer(),
           ElevatedButton(
             onPressed: () {
               showDialog(
@@ -263,12 +285,9 @@ class _ProductCartPageState extends State<ProductCartPage> {
                           // 2. 장바구니 비우기
                           setState(() => CartItem.items.clear());
                           // 3. 메인 화면으로 이동
-                          Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                              builder: (context) => ProductListPage(),
-                            ),
-                            (Route<dynamic> route) => false,
-                          );
+                          Navigator.of(
+                            context,
+                          ).popUntil((route) => route.isFirst);
                         },
                       ),
                     ],
@@ -288,7 +307,6 @@ class _ProductCartPageState extends State<ProductCartPage> {
               style: TextStyle(fontSize: 18, color: Colors.white),
             ),
           ),
-          //   const SizedBox(width: 30),
         ],
       ),
     );
