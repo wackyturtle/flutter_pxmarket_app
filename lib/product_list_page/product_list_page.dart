@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_pxmarket_app/product_regist_page/product_regist_page.dart';
 import 'package:flutter_pxmarket_app/widget/product.dart';
@@ -12,6 +11,13 @@ class ProductListPage extends StatefulWidget {
 
 class _ProductListPageState extends State<ProductListPage> {
   final List<Product> productList = [];
+
+  List<Product?> getFilledList(List<Product> productList) {
+    const int itemsPerRow = 3;
+    int remainder = productList.length % itemsPerRow;
+    int toAdd = remainder == 0 ? 0 : itemsPerRow - remainder;
+    return [...productList, ...List.filled(toAdd, null)];
+  }
 
   void productAdd() async {
     final newProduct = await Navigator.push(
@@ -52,19 +58,21 @@ class _ProductListPageState extends State<ProductListPage> {
       ),
       body: productList.isEmpty
           ? Center(child: Text('등록된 상품이 없습니다.'))
-          : ListView.separated(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              itemCount: (productList.length / 3).ceil(),
-              itemBuilder: (context, index) {
-                final start = index * 3;
-                final end = (start + 3 < productList.length)
-                    ? start + 3
-                    : productList.length;
-                final items = productList.sublist(start, end);
-
-                return ProductRow(productList: items);
-              },
-              separatorBuilder: (context, index) => SizedBox(height: 20),
+          : GridView.count(
+              crossAxisCount: 3,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 20,
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(), // 필요시
+              children: productList.map((product) {
+                return product == null
+                    ? SizedBox() // 빈 공간
+                    : ProductBox(
+                        name: product.productName,
+                        price: '${product.productPrice}원',
+                        image: product.productImage,
+                      );
+              }).toList(),
             ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
       floatingActionButton: pab(),
@@ -131,7 +139,6 @@ class ProductBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
             width: 120,
