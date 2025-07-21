@@ -127,83 +127,91 @@ class _ProductCartPageState extends State<ProductCartPage> {
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment:
+                        MainAxisAlignment.spaceBetween, // 상품명은 위로, 가격/버튼은 아래로
                     children: [
                       Text(
                         item.product.productName ?? '이름 없는 상품',
                         style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 4),
-                      Text(
-                        '${NumberFormat('#,###').format(item.product.productPrice)}원',
-                        style: const TextStyle(fontSize: 14),
-                      ),
-                    ],
-                  ),
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.only(top: 50),
-                  child: Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            if (item.quantity > 1) {
-                              item.quantity--;
-                            } else {
-                              CartItem.items.removeAt(index);
-                            }
-                          });
-                        },
-                        child: Container(
-                          width: 30,
-                          height: 30,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Color(0xFF3E5630),
-                          ),
-                          child: const Center(
-                            child: Icon(
-                              Icons.remove,
-                              size: 18,
-                              color: Colors.white,
+                      const SizedBox(height: 8), // 상품명과 가격/버튼 사이에 약간의 여백 추가
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment:
+                            CrossAxisAlignment.center, // 가격과 버튼을 수평으로 정렬
+                        children: [
+                          Text(
+                            '${NumberFormat('#,###').format(item.product.productPrice * item.quantity)}원',
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Text(
-                        '${item.quantity}',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            item.quantity++;
-                          });
-                        },
-                        child: Container(
-                          width: 30,
-                          height: 30,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Color(0xFF3E5630),
+                          Row(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    if (item.quantity > 1) {
+                                      item.quantity--;
+                                    } else {
+                                      CartItem.items.removeAt(index);
+                                    }
+                                  });
+                                },
+                                child: Container(
+                                  width: 30,
+                                  height: 30,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color(0xFF3E5630),
+                                  ),
+                                  child: const Center(
+                                    child: Icon(
+                                      Icons.remove,
+                                      size: 18,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Text(
+                                '${item.quantity}',
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    item.quantity++;
+                                  });
+                                },
+                                child: Container(
+                                  width: 30,
+                                  height: 30,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Color(0xFF3E5630),
+                                  ),
+                                  child: const Center(
+                                    child: Icon(
+                                      Icons.add,
+                                      size: 18,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          child: const Center(
-                            child: Icon(
-                              Icons.add,
-                              size: 18,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
+                        ],
                       ),
                     ],
                   ),
