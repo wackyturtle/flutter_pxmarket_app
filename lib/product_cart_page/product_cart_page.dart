@@ -7,6 +7,22 @@ class CartItem {
   int quantity;
 
   CartItem({required this.product, this.quantity = 1});
+
+  // 앱 전역에서 장바구니 데이터를 관리하기 위한 static 변수 및 메서드
+  static List<CartItem> items = [];
+
+  /// 장바구니에 상품을 추가합니다. 이미 있는 상품이면 수량을 더하기
+  static void addItem(Product product, int quantity) {
+    // 장바구니에 이미 있는 상품인지 확인 (상품 이름으로 비교)
+    for (var item in items) {
+      if (item.product.productName == product.productName) {
+        item.quantity += quantity;
+        return; // 수량만 추가하고 함수 종료
+      }
+    }
+    // 장바구니에 없는 새로운 상품이면 추가
+    items.add(CartItem(product: product, quantity: quantity));
+  }
 }
 
 class ProductCartPage extends StatefulWidget {
@@ -17,95 +33,10 @@ class ProductCartPage extends StatefulWidget {
 }
 
 class _ProductCartPageState extends State<ProductCartPage> {
-  // 장바구니에 담긴 상품을 나타내는 더미 데이터
-  final List<CartItem> _cartItems = [
-    CartItem(
-      product: Product(
-        productName: '슈넬 치킨',
-        productImage: Image.asset('assets/images/슈넬.jpg', fit: BoxFit.cover),
-        productPrice: 3500,
-        productInfo: '바삭바삭 맛있는 슈넬치킨',
-      ),
-      quantity: 2,
-    ),
-    CartItem(
-      product: Product(
-        productName: '크림우동',
-        productImage: Image.asset(
-          'assets/images/크림우동.jpg', // 사용 가능한 이미지로 수정
-          fit: BoxFit.cover,
-        ),
-        productPrice: 7500,
-        productInfo: '존맛탱',
-      ),
-      quantity: 1,
-    ),
-    CartItem(
-      product: Product(
-        productName: '빅팜',
-        productImage: Image.asset(
-          'assets/images/빅팜.jpg', // 사용 가능한 이미지로 수정
-          fit: BoxFit.cover,
-        ),
-        productPrice: 1500,
-        productInfo: '따봉',
-      ),
-      quantity: 3,
-    ),
-    CartItem(
-      product: Product(
-        productName: '크림우동',
-        productImage: Image.asset(
-          'assets/images/크림우동.jpg', // 사용 가능한 이미지로 수정
-          fit: BoxFit.cover,
-        ),
-        productPrice: 7500,
-        productInfo: '존맛탱',
-      ),
-      quantity: 1,
-    ),
-    CartItem(
-      product: Product(
-        productName: '크림우동',
-        productImage: Image.asset(
-          'assets/images/크림우동.jpg', // 사용 가능한 이미지로 수정
-          fit: BoxFit.cover,
-        ),
-        productPrice: 7500,
-        productInfo: '존맛탱',
-      ),
-      quantity: 1,
-    ),
-    CartItem(
-      product: Product(
-        productName: '크림우동',
-        productImage: Image.asset(
-          'assets/images/크림우동.jpg', // 사용 가능한 이미지로 수정
-          fit: BoxFit.cover,
-        ),
-        productPrice: 7500,
-        productInfo: '존맛탱',
-      ),
-      quantity: 1,
-    ),
-    CartItem(
-      product: Product(
-        productName: '크림우동',
-        productImage: Image.asset(
-          'assets/images/크림우동.jpg', // 사용 가능한 이미지로 수정
-          fit: BoxFit.cover,
-        ),
-        productPrice: 7500,
-        productInfo: '존맛탱',
-      ),
-      quantity: 1,
-    ),
-  ];
-
   // 총액을 계산하는 함수
   int _calculateTotalPrice() {
     int total = 0;
-    for (final item in _cartItems) {
+    for (final item in CartItem.items) {
       total += item.product.productPrice * item.quantity;
     }
     return total;
@@ -141,7 +72,7 @@ class _ProductCartPageState extends State<ProductCartPage> {
           ),
         ],
       ),
-      body: _cartItems.isEmpty
+      body: CartItem.items.isEmpty
           ? const Center(
               child: Text(
                 '장바구니가 비어있습니다.',
@@ -153,9 +84,9 @@ class _ProductCartPageState extends State<ProductCartPage> {
                 Expanded(
                   child: ListView.builder(
                     padding: const EdgeInsets.all(16.0),
-                    itemCount: _cartItems.length,
+                    itemCount: CartItem.items.length,
                     itemBuilder: (context, index) {
-                      final item = _cartItems[index];
+                      final item = CartItem.items[index];
                       return _buildCartItem(item, index);
                     },
                   ),
@@ -186,7 +117,7 @@ class _ProductCartPageState extends State<ProductCartPage> {
                   child: SizedBox(
                     width: 80,
                     height: 80,
-                    child: item.product.productImage,
+                    child: Image.file(item.product.productImage),
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -205,7 +136,7 @@ class _ProductCartPageState extends State<ProductCartPage> {
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          item.product.productName,
+                          item.product.productName ?? '이름 없는 상품',
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -233,7 +164,7 @@ class _ProductCartPageState extends State<ProductCartPage> {
                             if (item.quantity > 1) {
                               item.quantity--;
                             } else {
-                              _cartItems.removeAt(index);
+                              CartItem.items.removeAt(index);
                             }
                           });
                         },
@@ -266,7 +197,7 @@ class _ProductCartPageState extends State<ProductCartPage> {
               icon: const Icon(Icons.close, color: Colors.black54),
               onPressed: () {
                 setState(() {
-                  _cartItems.removeAt(index);
+                  CartItem.items.removeAt(index);
                 });
               },
             ),
@@ -330,7 +261,7 @@ class _ProductCartPageState extends State<ProductCartPage> {
                           // 1. 팝업 닫기
                           Navigator.of(dialogContext).pop();
                           // 2. 장바구니 비우기
-                          setState(() => _cartItems.clear());
+                          setState(() => CartItem.items.clear());
                           // 3. 메인 화면으로 이동
                           Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
