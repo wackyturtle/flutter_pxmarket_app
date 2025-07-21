@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_pxmarket_app/product_detail_page/product_detail_page.dart';
 import 'package:flutter_pxmarket_app/product_regist_page/product_regist_page.dart';
 import 'package:flutter_pxmarket_app/widget/product.dart';
 import 'package:flutter_svg/svg.dart';
@@ -16,7 +17,10 @@ class _ProductListPageState extends State<ProductListPage> {
     const int itemsPerRow = 3;
     int remainder = productList.length % itemsPerRow;
     int toAdd = remainder == 0 ? 0 : itemsPerRow - remainder;
-    return [...productList, ...List.filled(toAdd, null)];
+    return [
+      ...productList,
+      ...List.filled(toAdd, null),
+    ]; //List.filled(길이, 넣고싶은 것) // ... == 리스트를 하나씩 분리해서 반환
   }
 
   void productAdd() async {
@@ -48,9 +52,7 @@ class _ProductListPageState extends State<ProductListPage> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => ProductRegistPage(),
-                ), // 여기를 ProductCartPage로 변경하기
+                MaterialPageRoute(builder: (context) => ProductCartPage()),
               );
             },
           ),
@@ -60,26 +62,19 @@ class _ProductListPageState extends State<ProductListPage> {
           ? Center(child: Text('등록된 상품이 없습니다.'))
           : GridView.count(
               crossAxisCount: 3,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 20,
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(), // 필요시
+              mainAxisSpacing: 80,
               children: productList.map((product) {
                 return product == null
                     ? SizedBox() // 빈 공간
-                    : ProductBox(
-                        name: product.productName,
-                        price: '${product.productPrice}원',
-                        image: product.productImage,
-                      );
+                    : ProductBox(product: product);
               }).toList(),
             ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
-      floatingActionButton: pab(),
+      floatingActionButton: PAB(),
     );
   }
 
-  SizedBox pab() {
+  SizedBox PAB() {
     return SizedBox(
       height: 80,
       width: 80,
@@ -113,73 +108,72 @@ class ProductRow extends StatelessWidget {
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.start,
       children: productList.map((product) {
-        return ProductBox(
-          name: product.productName,
-          price: '${product.productPrice}원',
-          image: product.productImage,
-        );
+        return ProductBox(product: product);
       }).toList(),
     );
   }
 }
 
 class ProductBox extends StatelessWidget {
-  final name;
-  final price;
-  final File image;
+  final Product product;
 
-  const ProductBox({
-    super.key,
-    required this.name,
-    required this.price,
-    required this.image,
-  });
+  const ProductBox({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Column(
-        children: [
-          Container(
-            width: 120,
-            height: 120,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25),
-              image: DecorationImage(
-                image: FileImage(image),
-                fit: BoxFit.cover,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => ProductDetailPage(product: product),
+            ),
+          );
+        },
+        child: Column(
+          children: [
+            Container(
+              width: 120,
+              height: 120,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
+                image: DecorationImage(
+                  image: FileImage(product.productImage),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-          ),
-          SizedBox(
-            width: 120,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 5),
-                  Text(
-                    '냉동',
-                    style: TextStyle(fontSize: 12, color: Color(0xFF3E5630)),
-                  ),
-                  Text(
-                    name,
-                    style: TextStyle(fontSize: 15, color: Color(0xFF292929)),
-                  ),
-                  Text(
-                    price,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF292929),
+            SizedBox(
+              width: 120,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 5),
+                    Text(
+                      '냉동',
+                      style: TextStyle(fontSize: 12, color: Color(0xFF3E5630)),
                     ),
-                  ),
-                ],
+                    Text(
+                      product.productName,
+                      style: TextStyle(fontSize: 15, color: Color(0xFF292929)),
+                    ),
+                    Text(
+                      product.productPrice.toString(),
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF292929),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

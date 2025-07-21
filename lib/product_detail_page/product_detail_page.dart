@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_pxmarket_app/widget/product.dart';
 
@@ -41,7 +39,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     });
   }
 
-
   // 구매 확인 팝업
   void _showPurchaseConfirmationDialog() {
     showDialog(
@@ -50,7 +47,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         return AlertDialog(
           title: const Text('구매 확인'),
           // widget.product.productName으로 변경
-          content: Text('${widget.product.productName}을 $_itemCount개 구매하시겠습니까?'),
+          content: Text(
+            '${widget.product.productName}을 $_itemCount개 구매하시겠습니까?',
+          ),
           actions: [
             TextButton(
               onPressed: () {
@@ -92,11 +91,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:const Color.fromARGB(249, 249, 249, 249),
+      backgroundColor: const Color.fromARGB(249, 249, 249, 249),
       appBar: AppBar(
         backgroundColor: const Color(0xFF4B774E),
         elevation: 0,
@@ -132,28 +130,18 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               const SizedBox(height: 10),
               Container(
                 height: MediaQuery.of(context).size.width * 0.9,
-                decoration: BoxDecoration(
-
-
-                ),
+                decoration: BoxDecoration(),
                 child: ClipRRect(
-
                   // widget.product.productImage로 변경
-                  child: widget.product.productImage,
+                  //child: widget.product.productImage,
                 ),
               ),
-
-
-
 
               // 상품 상세
               const SizedBox(height: 20),
               Container(
                 padding: const EdgeInsets.all(20.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-
-                ),
+                decoration: BoxDecoration(color: Colors.white),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -180,10 +168,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           ),
                         ),
 
-
                         // 수량 버튼
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
                           decoration: BoxDecoration(
                             color: Colors.red,
                             borderRadius: BorderRadius.circular(20),
@@ -191,23 +181,34 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           child: Row(
                             children: [
                               IconButton(
-                                icon: const Icon(Icons.remove, size: 20, color: Colors.black),
+                                icon: const Icon(
+                                  Icons.remove,
+                                  size: 20,
+                                  color: Colors.black,
+                                ),
                                 onPressed: _decrementItem,
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12.0,
+                                ),
                                 child: Text(
                                   '$_itemCount',
-                                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                               IconButton(
                                 icon: Icon(
                                   Icons.add,
                                   size: 20,
-                                  color: _itemCount >= 99 ? Colors.grey : Colors.black,
+                                  color: _itemCount >= 99
+                                      ? Colors.grey
+                                      : Colors.black,
                                 ),
                                 onPressed: _incrementItem,
                                 padding: EdgeInsets.zero,
@@ -218,10 +219,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         ),
                       ],
                     ),
-
-
-
-
 
                     const SizedBox(height: 16),
                     Container(
@@ -259,7 +256,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        side: const BorderSide(color: Color(0xFF4C4C4C), width: 1.5),
+                        side: const BorderSide(
+                          color: Color(0xFF4C4C4C),
+                          width: 1.5,
+                        ),
                         backgroundColor: const Color(0xFF4C4C4C),
                       ),
                       child: const Text(
