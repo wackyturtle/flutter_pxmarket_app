@@ -173,7 +173,7 @@ class _ProductCartPageState extends State<ProductCartPage> {
       child: Stack(
         children: [
           Container(
-            // 박스의 안쪽 여백을 늘려 X 버튼과 내용이 겹치지 않게 조정합니다.
+            // 박스의 안쪽 여백을 늘려 X 버튼과 내용이 겹치지 않게 조정
             padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
             decoration: BoxDecoration(
               border: Border.all(color: Colors.black, width: 1.0),
