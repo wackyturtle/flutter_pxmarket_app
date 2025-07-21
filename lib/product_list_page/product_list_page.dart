@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_pxmarket_app/product_cart_page/product_cart_page.dart';
 import 'package:flutter_pxmarket_app/product_detail_page/product_detail_page.dart';
 import 'package:flutter_pxmarket_app/product_regist_page/product_regist_page.dart';
 import 'package:flutter_pxmarket_app/widget/product.dart';
@@ -12,7 +13,6 @@ class ProductListPage extends StatefulWidget {
 
 class _ProductListPageState extends State<ProductListPage> {
   final List<Product> productList = [];
-
   List<Product?> getFilledList(List<Product> productList) {
     const int itemsPerRow = 3;
     int remainder = productList.length % itemsPerRow;
@@ -28,7 +28,6 @@ class _ProductListPageState extends State<ProductListPage> {
       context,
       MaterialPageRoute(builder: (_) => ProductRegistPage()),
     );
-
     if (newProduct != null && newProduct is Product) {
       setState(() {
         productList.add(newProduct);
@@ -52,7 +51,9 @@ class _ProductListPageState extends State<ProductListPage> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ProductCartPage()),
+                MaterialPageRoute(
+                  builder: (context) => ProductCartPage(),
+                ), // 여기를 ProductCartPage로 변경하기
               );
             },
           ),
@@ -100,7 +101,6 @@ class _ProductListPageState extends State<ProductListPage> {
 
 class ProductRow extends StatelessWidget {
   final List<Product> productList;
-
   const ProductRow({super.key, required this.productList});
   @override
   Widget build(BuildContext context) {
@@ -116,9 +116,7 @@ class ProductRow extends StatelessWidget {
 
 class ProductBox extends StatelessWidget {
   final Product product;
-
   const ProductBox({super.key, required this.product});
-
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -157,7 +155,7 @@ class ProductBox extends StatelessWidget {
                       style: TextStyle(fontSize: 12, color: Color(0xFF3E5630)),
                     ),
                     Text(
-                      product.productName,
+                      product.productName ?? '이름 없는 상품',
                       style: TextStyle(fontSize: 15, color: Color(0xFF292929)),
                     ),
                     Text(
