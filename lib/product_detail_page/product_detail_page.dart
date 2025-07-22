@@ -130,20 +130,29 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         height: 1.1, // 줄 간격 줄이기
                       ),
                     ),
-
+                    SizedBox(height: 8),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         // 가격 텍스트
-                        Text(
-                          '₩${NumberFormat('#,###').format(widget.product.productPrice * _itemCount)}원',
-                          style: const TextStyle(
-                            fontSize: 27,
-                            fontWeight: FontWeight.w800,
-                            color: Color(0xFF292929),
-                          ),
-                        ),
+                        widget.product.productPrice == 0
+                            ? Text(
+                                '무료',
+                                style: TextStyle(
+                                  color: Color(0xFF292929),
+                                  fontSize: 27,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            : Text(
+                                '${NumberFormat('#,###').format(widget.product.productPrice * _itemCount)}원',
+                                style: const TextStyle(
+                                  fontSize: 27,
+                                  fontWeight: FontWeight.w800,
+                                  color: Color(0xFF292929),
+                                ),
+                              ),
 
                         // 수량 버튼
                         Row(
@@ -204,18 +213,18 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       ],
                     ),
                     // 가방 설명
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 8),
                     Container(
                       margin: const EdgeInsets.symmetric(vertical: 12),
                       height: 1.0, // 실선
                       color: Color(0xFF292929),
                     ),
 
-                    SizedBox(height: 18),
+                    SizedBox(height: 8),
                     Text(
                       widget.product.productInfo,
                       style: const TextStyle(
-                        fontSize: 19,
+                        fontSize: 18,
                         color: Color(0xFF292929),
                         height: 1.5,
                       ),

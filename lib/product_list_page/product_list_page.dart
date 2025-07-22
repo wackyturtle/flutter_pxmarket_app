@@ -148,14 +148,23 @@ class ProductBox extends StatelessWidget {
                     product.productName,
                     style: TextStyle(fontSize: 15, color: Color(0xFF292929)),
                   ),
-                  Text(
-                    '${NumberFormat('#,###').format(product.productPrice)}원',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF292929),
-                    ),
-                  ),
+                  product.productPrice == 0
+                      ? Text(
+                          '무료',
+                          style: TextStyle(
+                            color: Color(0xFF292929),
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      : Text(
+                          '${NumberFormat('#,###').format(product.productPrice)}원',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF292929),
+                          ),
+                        ),
                 ],
               ),
             ),
