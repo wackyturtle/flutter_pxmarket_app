@@ -170,7 +170,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       children: [
                         // 가격 텍스트
                         Text(
-                          '₩ ${NumberFormat('#,###').format(widget.product.productPrice * _itemCount)}',
+                          '₩ ${NumberFormat('#,###').format(widget.product.productPrice * _itemCount)}원',
                           style: const TextStyle(
                             fontSize: 27,
                             fontWeight: FontWeight.w800,
