@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pxmarket_app/product_list_page/product_list_page.dart';
 
 void main() {
-  runApp(const PxMarketApp());
+  runApp(MyApp());
 }
 
-class PxMarketApp extends StatelessWidget {
-  const PxMarketApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
