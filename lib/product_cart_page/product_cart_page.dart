@@ -138,6 +138,7 @@ class _ProductCartPageState extends State<ProductCartPage> {
                         ),
                       ),
                       const SizedBox(height: 8), // 상품명과 가격/버튼 사이에 약간의 여백 추가
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment:
