@@ -65,7 +65,7 @@ class _ProductRegistPageState extends State<ProductRegistPage> {
               Navigator.pop(context); // 팝업 닫기
 
               final product = Product(
-                productImage: Image.file(_selectedImage!), // File → Image 변환
+                productImage: _selectedImage!.path, // File → Image 변환
                 productName: controller_name.text.trim(),
                 productPrice: int.parse(controller_price.text.trim()),
                 productInfo: controller_info.text.trim(),

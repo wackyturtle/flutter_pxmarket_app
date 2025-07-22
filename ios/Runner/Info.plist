@@ -45,5 +45,7 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>이미지 컨텐츠를 등록할 목적으로 사진첩에 접근을 합니다.</string>
 </dict>
 </plist>

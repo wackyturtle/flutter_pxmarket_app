@@ -1,28 +1,45 @@
-
-
 import 'package:flutter/material.dart';
-import 'package:flutter_pxmarket_app/product_detail_page/product_detail_page.dart';
-import 'package:flutter_pxmarket_app/widget/product.dart';
+import 'package:flutter_pxmarket_app/product_list_page/product_list_page.dart';
+import 'product_regist_page/product_regist_page.dart';
 
 void main() {
-  runApp(const PxMarketApp());
+  runApp(const MyApp());
 }
 
-class PxMarketApp extends StatelessWidget {
-  const PxMarketApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'PX마켓',
-      home: ProductDetailPage(
-        product: Product(
-          productName: '상품 상세',
-          productImage: Image.asset('assets/images/bag.webp'),
-          productPrice: 15000,
-          productInfo: '군더더기 없이 깔끔한 디자인과 넉넉한 사이즈로 활용도가 높으며 남녀노소 누구나 착용이 가능합니다.',
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+        inputDecorationTheme: InputDecorationTheme(
+          labelStyle: TextStyle(
+            color: Color.fromARGB(255, 58, 115, 37),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Color.fromARGB(255, 58, 115, 37)),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey),
+          ),
+        ),
+        dialogTheme: DialogThemeData(
+          backgroundColor: Colors.yellow[50],
+          titleTextStyle: TextStyle( //팝업창제목스타일
+            color: Color(0xFF3E5934),
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
+
+
+
+
+      
+      home: ProductListPage(),
     );
   }
 }
