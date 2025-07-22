@@ -110,9 +110,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const SizedBox(height: 20),
-              FittedBox(
-                fit: BoxFit.cover,
-                child: Image.file(widget.product.productImage),
+              Container(
+                height: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: FileImage(widget.product.productImage),
+                  ),
+                ),
               ),
 
               // 상품 상세
