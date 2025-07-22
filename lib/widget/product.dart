@@ -1,8 +1,7 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
 
 class Product {
-  String? productName;
+  String productName;
   File productImage;
   int productPrice;
   String productInfo;

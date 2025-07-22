@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_pxmarket_app/widget/product.dart';
+import 'package:flutter_pxmarket_app/widget/method.dart';
 
 class ProductRegistPage extends StatefulWidget {
   @override
@@ -110,7 +111,8 @@ class _ProductRegistPageState extends State<ProductRegistPage> {
     return Scaffold(
       backgroundColor: Color(0xFFFEF9E2),
       appBar: AppBar(
-        title: Text('상품 등록'),
+        title: titleMethod('상품 등록'),
+        centerTitle: true,
         backgroundColor: Color(0xFF3E5934),
         foregroundColor: Colors.white,
         leading: IconButton(
