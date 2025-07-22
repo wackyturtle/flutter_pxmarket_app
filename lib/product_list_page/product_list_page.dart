@@ -6,11 +6,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_pxmarket_app/widget/method.dart';
 
-//가격이 0일 경우 무료인 표현 해야함!!
-//주석처리로 설명 덧붙이고
-//각자 한번더 과제 노션이랑 피그마랑 본인 페이지랑 비교
-
 class ProductListPage extends StatefulWidget {
+  const ProductListPage({super.key});
+
   @override
   State<ProductListPage> createState() => _ProductListPageState();
 }
@@ -18,16 +16,7 @@ class ProductListPage extends StatefulWidget {
 class _ProductListPageState extends State<ProductListPage> {
   final List<Product> productList = [];
 
-  List<Product?> getFilledList(List<Product> productList) {
-    const int itemsPerRow = 3;
-    int remainder = productList.length % itemsPerRow;
-    int toAdd = remainder == 0 ? 0 : itemsPerRow - remainder;
-    return [
-      ...productList,
-      ...List.filled(toAdd, null),
-    ]; //List.filled(길이, 넣고싶은 것) // ... == 리스트를 하나씩 분리해서 반환
-  }
-
+  //상품 등록 버튼 눌렸을 때
   void productAdd() async {
     final newProduct = await Navigator.push(
       context,
@@ -49,25 +38,24 @@ class _ProductListPageState extends State<ProductListPage> {
         backgroundColor: Color(0xFF3E5630),
         actions: [goToCart(context)],
       ),
+      //상품이 있는지 없는지 체크
       body: productList.isEmpty
           ? Center(child: Text('등록된 상품이 없습니다.'))
           : GridView.count(
               padding: EdgeInsets.symmetric(vertical: 30),
-              crossAxisCount: 3,
-              mainAxisSpacing: 40,
-              childAspectRatio: 0.75,
+              crossAxisCount: 3, // 아이템 갯수
+              mainAxisSpacing: 40, // 그리드마다 위아래 공간 띄우기
+              childAspectRatio: 0.75, // 그리드 한칸의 가로 세로의 비율을 맞춰줌
               children: productList.map((product) {
-                return product == null
-                    ? SizedBox() // 빈 공간
-                    : ProductBox(product: product);
+                return ProductBox(product: product);
               }).toList(),
             ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: FAB(),
+      floatingActionButton: fAB(),
     );
   }
 
-  SizedBox FAB() {
+  SizedBox fAB() {
     return SizedBox(
       height: 80,
       width: 80,
@@ -87,21 +75,6 @@ class _ProductListPageState extends State<ProductListPage> {
           colorFilter: ColorFilter.mode(Color(0xFF3E5630), BlendMode.srcIn),
         ),
       ),
-    );
-  }
-}
-
-class ProductRow extends StatelessWidget {
-  final List<Product> productList;
-  const ProductRow({super.key, required this.productList});
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: productList.map((product) {
-        return ProductBox(product: product);
-      }).toList(),
     );
   }
 }
