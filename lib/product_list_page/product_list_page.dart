@@ -79,6 +79,7 @@ class _ProductListPageState extends State<ProductListPage> {
   }
 }
 
+//제품 박스 클래스
 class ProductBox extends StatelessWidget {
   final Product product;
 
@@ -86,6 +87,7 @@ class ProductBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //박스 자식들 터치시 제품상세로 이동
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -97,6 +99,7 @@ class ProductBox extends StatelessWidget {
       },
       child: Column(
         children: [
+          //이미지 콘테이너
           Container(
             width: 120,
             height: 120,
@@ -109,6 +112,7 @@ class ProductBox extends StatelessWidget {
               ),
             ),
           ),
+          //이름, 가격 표시
           SizedBox(
             width: 120,
             child: Padding(
@@ -117,10 +121,12 @@ class ProductBox extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 10),
+                  //제품 이름
                   Text(
                     product.productName,
                     style: TextStyle(fontSize: 15, color: Color(0xFF292929)),
                   ),
+                  //제품 가격 (무료 or 가격)
                   product.productPrice == 0
                       ? Text(
                           '무료',
