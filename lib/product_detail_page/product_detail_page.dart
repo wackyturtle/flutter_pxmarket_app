@@ -1,11 +1,13 @@
-
-
 import 'package:flutter/material.dart';
+import 'package:flutter_pxmarket_app/product_cart_page/product_cart_page.dart';
+import 'package:flutter_pxmarket_app/widget/method.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_pxmarket_app/widget/product.dart';
+
+// import 'package:flutter_pxmarket_app/cartpage.dart';
 
 class ProductDetailPage extends StatefulWidget {
   final Product product;
-
   const ProductDetailPage({super.key, required this.product});
 
   @override
@@ -14,20 +16,12 @@ class ProductDetailPage extends StatefulWidget {
 
 class _ProductDetailPageState extends State<ProductDetailPage> {
   int _itemCount = 1;
-  late int _totalPrice;
 
-  @override
-  void initState() {
-    super.initState();
-    // widget.product.productPrice로 변경
-    _totalPrice = widget.product.productPrice * _itemCount;
-  }
-
+  // 예외처리 => 구매 수량 0보다 작을 수 없고 100보다 클 수 없음 1~99
   void _incrementItem() {
     setState(() {
       if (_itemCount < 99) {
         _itemCount++;
-        _totalPrice = widget.product.productPrice * _itemCount;
       }
     });
   }
@@ -36,11 +30,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     setState(() {
       if (_itemCount > 1) {
         _itemCount--;
-        _totalPrice = widget.product.productPrice * _itemCount;
       }
     });
   }
-
 
   // 구매 확인 팝업
   void _showPurchaseConfirmationDialog() {
@@ -49,8 +41,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       builder: (BuildContext dialogContext) {
         return AlertDialog(
           title: const Text('구매 확인'),
-          // widget.product.productName으로 변경
-          content: Text('${widget.product.productName}을 $_itemCount개 구매하시겠습니까?'),
+          content: Text(
+            '${widget.product.productName}을(를) $_itemCount개 구매하시겠습니까?',
+          ),
           actions: [
             TextButton(
               onPressed: () {
@@ -92,154 +85,161 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:const Color.fromARGB(249, 249, 249, 249),
+      backgroundColor: const Color.fromARGB(249, 249, 249, 249),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF4B774E),
+        backgroundColor: Color(0xFF3E5630),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          '상품 상세',
-          style: TextStyle(color: Colors.white, fontSize: 18),
-        ),
+        title: titleMethod('상품 상세'),
         centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.shopping_cart, color: Colors.white),
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('장바구니 기능은 아직 구현되지 않았습니다.'),
-                  duration: Duration(seconds: 1),
-                ),
-              );
-            },
-          ),
-        ],
+
+        // 장바구니 넘어가기
+        actions: [goToCart(context)],
       ),
+
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               Container(
-                height: MediaQuery.of(context).size.width * 0.9,
+                height: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-
-
-                ),
-                child: ClipRRect(
-
-                  // widget.product.productImage로 변경
-                  child: widget.product.productImage,
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: FileImage(widget.product.productImage),
+                  ),
                 ),
               ),
-
-
-
 
               // 상품 상세
               const SizedBox(height: 20),
               Container(
                 padding: const EdgeInsets.all(20.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-
-                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      // widget.product.productName으로 변경
-                      '군용 가방',
+                      widget.product.productName ?? '이름 없는 상품',
                       style: const TextStyle(
                         fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                        color: const Color(0xFF292929),
+                        height: 1.1, // 줄 간격 줄이기
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: 8),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          '₩ ${_totalPrice.toString().replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}',
-                          style: const TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
-
+                        // 가격 텍스트
+                        widget.product.productPrice == 0
+                            ? Text(
+                                '무료',
+                                style: TextStyle(
+                                  color: Color(0xFF292929),
+                                  fontSize: 27,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            : Text(
+                                '${NumberFormat('#,###').format(widget.product.productPrice * _itemCount)}원',
+                                style: const TextStyle(
+                                  fontSize: 27,
+                                  fontWeight: FontWeight.w800,
+                                  color: Color(0xFF292929),
+                                ),
+                              ),
 
                         // 수량 버튼
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Row(
-                            children: [
-                              IconButton(
-                                icon: const Icon(Icons.remove, size: 20, color: Colors.black),
-                                onPressed: _decrementItem,
-                                padding: EdgeInsets.zero,
-                                constraints: const BoxConstraints(),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                                child: Text(
-                                  '$_itemCount',
-                                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        Row(
+                          children: [
+                            GestureDetector(
+                              onTap: _decrementItem,
+                              child: Container(
+                                width: 36,
+                                height: 36,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Color(0xFF3E5630),
+                                ),
+                                child: const Center(
+                                  child: Icon(
+                                    Icons.remove,
+                                    size: 20,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
-                              IconButton(
-                                icon: Icon(
-                                  Icons.add,
-                                  size: 20,
-                                  color: _itemCount >= 99 ? Colors.grey : Colors.black,
-                                ),
-                                onPressed: _incrementItem,
-                                padding: EdgeInsets.zero,
-                                constraints: const BoxConstraints(),
+                            ),
+
+                            const SizedBox(width: 12),
+
+                            // 수량 텍스트
+                            Text(
+                              '$_itemCount',
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF292929),
                               ),
-                            ],
-                          ),
+                            ),
+
+                            const SizedBox(width: 12),
+
+                            GestureDetector(
+                              onTap: _incrementItem,
+                              child: Container(
+                                width: 36,
+                                height: 36,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Color(0xFF3E5630),
+                                ),
+                                child: const Center(
+                                  child: Icon(
+                                    Icons.add,
+                                    size: 20,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-
-
-
-
-
-                    const SizedBox(height: 16),
+                    // 가방 설명
+                    const SizedBox(height: 8),
                     Container(
                       margin: const EdgeInsets.symmetric(vertical: 12),
-                      height: 1.0,
-                      color: Colors.grey[300],
+                      height: 1.0, // 실선
+                      color: Color(0xFF292929),
                     ),
+
+                    SizedBox(height: 8),
                     Text(
                       widget.product.productInfo,
                       style: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.black54,
+                        fontSize: 18,
+                        color: Color(0xFF292929),
                         height: 1.5,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                   ],
                 ),
               ),
+
+              // 장바구니 넘어가기
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -247,10 +247,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   Expanded(
                     child: OutlinedButton(
                       onPressed: () {
+                        // 중앙 장바구니에 현재 상품과 수량을 추가
+                        CartItem.addItem(widget.product, _itemCount);
+
+                        // 사용자에게 상품이 담겼음을 알리는 스낵바를 표시
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text('장바구니 기능은 아직 구현되지 않았습니다.'),
-                            duration: Duration(seconds: 1),
+                            content: Text('장바구니에 상품을 담았습니다.'),
+                            duration: Duration(seconds: 2),
                           ),
                         );
                       },
@@ -259,8 +263,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        side: const BorderSide(color: Color(0xFF4C4C4C), width: 1.5),
-                        backgroundColor: const Color(0xFF4C4C4C),
+                        side: const BorderSide(
+                          color: Color(0xFF292929),
+                          width: 1.5,
+                        ),
+                        backgroundColor: const Color(0xFF292929),
                       ),
                       child: const Text(
                         '장바구니',
@@ -273,17 +280,20 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     ),
                   ),
                   const SizedBox(width: 10),
+
+                  // 바로구매
                   Expanded(
                     child: ElevatedButton(
                       onPressed: _showPurchaseConfirmationDialog,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF4B774E),
+                        backgroundColor: Color(0xFF3E5630),
                         padding: const EdgeInsets.symmetric(vertical: 15),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
                         elevation: 0,
                       ),
+
                       child: const Text(
                         '바로구매',
                         style: TextStyle(

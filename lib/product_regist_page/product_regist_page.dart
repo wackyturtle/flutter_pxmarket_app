@@ -2,6 +2,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_pxmarket_app/widget/product.dart';
+<<<<<<< HEAD
+=======
+import 'package:flutter_pxmarket_app/widget/method.dart';
+>>>>>>> 953a7d1c4fc933024235f15c1e220f646ae42c4b
 
 class ProductRegistPage extends StatefulWidget {
   @override
@@ -65,7 +69,11 @@ class _ProductRegistPageState extends State<ProductRegistPage> {
               Navigator.pop(context); // 팝업 닫기
 
               final product = Product(
+<<<<<<< HEAD
                 productImage: _selectedImage!.path, // File → Image 변환
+=======
+                productImage: _selectedImage!, // File
+>>>>>>> 953a7d1c4fc933024235f15c1e220f646ae42c4b
                 productName: controller_name.text.trim(),
                 productPrice: int.parse(controller_price.text.trim()),
                 productInfo: controller_info.text.trim(),
@@ -110,7 +118,8 @@ class _ProductRegistPageState extends State<ProductRegistPage> {
     return Scaffold(
       backgroundColor: Color(0xFFFEF9E2),
       appBar: AppBar(
-        title: Text('상품 등록'),
+        title: titleMethod('상품 등록'),
+        centerTitle: true,
         backgroundColor: Color(0xFF3E5934),
         foregroundColor: Colors.white,
         leading: IconButton(
