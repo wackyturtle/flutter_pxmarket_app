@@ -45,7 +45,7 @@ class _ProductListPageState extends State<ProductListPage> {
               padding: EdgeInsets.symmetric(vertical: 30),
               crossAxisCount: 3, // 아이템 갯수
               mainAxisSpacing: 40, // 그리드마다 위아래 공간 띄우기
-              childAspectRatio: 0.75, // 그리드 한칸의 가로 세로의 비율을 맞춰줌
+              childAspectRatio: 0.7, // 그리드 한칸의 가로 세로의 비율을 맞춰줌
               children: productList.map((product) {
                 return ProductBox(product: product);
               }).toList(),
