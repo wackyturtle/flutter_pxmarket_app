@@ -1,14 +1,14 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
 class Product {
   String productName;
-  Image productImage;
+  File productImage;
   int productPrice;
   String productInfo;
 
   Product({
-    required this.productImage,
     required this.productName,
+    required this.productImage,
     required this.productPrice,
     required this.productInfo,
   });
