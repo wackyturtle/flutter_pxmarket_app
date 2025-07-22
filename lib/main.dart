@@ -5,6 +5,7 @@ void main() {
   runApp(const MyApp());
 }
 
+//아아
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
