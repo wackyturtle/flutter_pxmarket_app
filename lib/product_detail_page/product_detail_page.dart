@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pxmarket_app/product_cart_page/product_cart_page.dart';
+import 'package:flutter_pxmarket_app/widget/method.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_pxmarket_app/widget/product.dart';
+
 // import 'package:flutter_pxmarket_app/cartpage.dart';
 
 class ProductDetailPage extends StatefulWidget {
@@ -94,32 +96,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          '상품 상세',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 23,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        title: titleMethod('상품 상세'),
         centerTitle: true,
 
         // 장바구니 넘어가기
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.shopping_cart, color: Colors.white),
-            onPressed: () {
-              // 장바구니 페이지로 바로 이동
-              // 아이템 추가는 하단의 '장바구니' 버튼으로 역할을 분리
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ProductCartPage(),
-                ),
-              );
-            },
-          ),
-        ],
+        actions: [goToCart(context)],
       ),
 
       body: SingleChildScrollView(
@@ -149,20 +130,29 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         height: 1.1, // 줄 간격 줄이기
                       ),
                     ),
-
+                    SizedBox(height: 8),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         // 가격 텍스트
-                        Text(
-                          '₩${NumberFormat('#,###').format(widget.product.productPrice * _itemCount)}원',
-                          style: const TextStyle(
-                            fontSize: 27,
-                            fontWeight: FontWeight.w800,
-                            color: Color(0xFF292929),
-                          ),
-                        ),
+                        widget.product.productPrice == 0
+                            ? Text(
+                                '무료',
+                                style: TextStyle(
+                                  color: Color(0xFF292929),
+                                  fontSize: 27,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            : Text(
+                                '${NumberFormat('#,###').format(widget.product.productPrice * _itemCount)}원',
+                                style: const TextStyle(
+                                  fontSize: 27,
+                                  fontWeight: FontWeight.w800,
+                                  color: Color(0xFF292929),
+                                ),
+                              ),
 
                         // 수량 버튼
                         Row(
@@ -223,18 +213,18 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       ],
                     ),
                     // 가방 설명
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 8),
                     Container(
                       margin: const EdgeInsets.symmetric(vertical: 12),
                       height: 1.0, // 실선
                       color: Color(0xFF292929),
                     ),
 
-                    SizedBox(height: 18),
+                    SizedBox(height: 8),
                     Text(
                       widget.product.productInfo,
                       style: const TextStyle(
-                        fontSize: 19,
+                        fontSize: 18,
                         color: Color(0xFF292929),
                         height: 1.5,
                       ),

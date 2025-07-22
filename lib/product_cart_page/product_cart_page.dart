@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pxmarket_app/widget/method.dart';
 import 'package:flutter_pxmarket_app/widget/product.dart';
 import 'package:flutter_pxmarket_app/product_list_page/product_list_page.dart';
 import 'package:intl/intl.dart';
@@ -54,10 +55,7 @@ class _ProductCartPageState extends State<ProductCartPage> {
             Navigator.of(context).pop();
           },
         ),
-        title: const Text(
-          '장바구니',
-          style: TextStyle(fontSize: 24, color: Color(0xFFF9F9F9)),
-        ),
+        title: titleMethod('장바구니'),
         centerTitle: true,
         backgroundColor: const Color(0xFF3E5630),
         actions: [
@@ -144,13 +142,22 @@ class _ProductCartPageState extends State<ProductCartPage> {
                         crossAxisAlignment:
                             CrossAxisAlignment.center, // 가격과 버튼을 수평으로 정렬
                         children: [
-                          Text(
-                            '${NumberFormat('#,###').format(item.product.productPrice * item.quantity)}원',
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          item.product.productPrice == 0
+                              ? Text(
+                                  '무료',
+                                  style: TextStyle(
+                                    color: Color(0xFF292929),
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )
+                              : Text(
+                                  '${NumberFormat('#,###').format(item.product.productPrice * item.quantity)}원',
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                           Row(
                             children: [
                               GestureDetector(
